@@ -55,7 +55,7 @@
         "webpack-dev-server": "^2.4.2"
     },
     "repository": "neptunjs/react-parcoords",
-    "license": "MIT",
+    "license": "BSD-3-Clause",
     "dependencies": {
         "d3": "^3.0.0",
         "lodash": "^4.17.4"

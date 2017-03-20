@@ -343,7 +343,7 @@ d3.parcoords = function(config) {
             });
         }
 
-        // update centroids
+        // update activeCentroids
         if (__.bundleDimension !== null) {
             pc.bundleDimension(__.bundleDimension);
         }
@@ -425,6 +425,8 @@ d3.parcoords = function(config) {
         events.render.call(this);
         return this;
     };
+
+    pc.isBrushed = isBrushed;
 
     function isBrushed() {
         if (__.brushed && __.brushed.length !== __.data.length)
@@ -524,12 +526,12 @@ d3.parcoords = function(config) {
         var cols = p.length;
         var a = 0.5;			// center between axes
         for (var i = 0; i < cols; ++i) {
-            // centroids on 'real' axes
+            // activeCentroids on 'real' axes
             var x = position(p[i]);
             var y = __.dimensions[p[i]].yscale(row[p[i]]);
             centroids.push($V([x, y]));
 
-            // centroids on 'virtual' axes
+            // activeCentroids on 'virtual' axes
             if (i < cols - 1) {
                 var cx = x + a * (position(p[i+1]) - x);
                 var cy = y + a * (__.dimensions[p[i+1]].yscale(row[p[i+1]]) - y);

@@ -18,11 +18,10 @@ class App extends Component {
                     height={300}
                     dimensions={data.dimensions}
                     data={data.data}
-                    colour={data.color}
-                    onBrush_extents={noop}
-                    onBrushEnd_extents={noop}
-                    onBrushEnd_data={noop}
-                    onLineHover={noop}
+                    color={data.color}
+                    onBrush={noop}
+                    onBrushEnd={d => console.log('brush end', d)}
+                    onLineHover={d => console.log('line hover', d)}
                 />
             </div>
         );
