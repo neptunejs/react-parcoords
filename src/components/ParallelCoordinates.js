@@ -20,6 +20,7 @@ class ParallelCoordinates extends Component {
     }
 
     resetBrush() {
+        this.pc.brushReset();
         this.activeData = this.props.data;
     }
 
@@ -117,23 +118,18 @@ class ParallelCoordinates extends Component {
         }
     }
 
+    checkPropsSanity() {
+        const numDimensions = Object.keys(this.props.dimensions).length;
+        if (this.props.data === undefined || this.props.data[0] === undefined || numDimensions > this.props.data[0].length) {
+            throw new Error('Data and dimension mismatch');
+        }
+    }
+
     componentDidMount() { // component is now in the DOM
         console.log('component did mount');
         const DOMNode = this.refs.parcoords;
-        const data = this.props.data;
-        const colour = this.props.colour;
 
-        this.pc = parcoords({
-            //alpha: 0.2,
-            color: "#069",
-            shadowColor: "#f3f3f3", // does not exist in current PC version
-            dimensionTitleRotation: -50,
-            margin: {top: 33, right: 0, bottom: 12, left: 0},
-            nullValueSeparator: "bottom",
-        })(DOMNode);
-
-        this.updatePC();
-
+        this.createPC();
 
         const that = this;
         d3Select(DOMNode).select('svg')
@@ -145,101 +141,120 @@ class ParallelCoordinates extends Component {
             });
     }
 
-    updatePC() {
+    createPC() {
+        this.pc = parcoords({
+            //alpha: 0.2,
+            color: "#069",
+            shadowColor: "#f3f3f3", // does not exist in current PC version
+            dimensionTitleRotation: -50,
+            margin: {top: 33, right: 0, bottom: 12, left: 0},
+            nullValueSeparator: "bottom"
+        })(this.refs.parcoords);
+
+        this.updatePC();
         this.pc
-            .data(this.props.data)
-            .alpha(this.getAdaptiveAlpha(this.props.data))
-            .composite("source-over") // globalCompositeOperation "darken" may be broken in chrome, "source-over" is boring
-            .mode("queue")
-            .dimensions(this.props.dimensions)
-            .color(this.props.color)
-            // show/hide dimensions [0,1,2,3,4,5]
-            .render()
-            .shadows()
-            .createAxes()
-            .reorderable()
-            .brushMode("1D-axes") // enable brushing
             .on("brushend", d => {
                 this.onBrushEnd(d)
             })
             .on("brush", d => {
                 this.onBrush(d);
             });
+    }
 
+    updatePC() {
+        this.checkPropsSanity();
+        this.pc
+            .data(this.props.data)
+            .width(this.props.width)
+            .height(this.props.height)
+            .alpha(this.getAdaptiveAlpha(this.props.data))
+            .dimensions(this.props.dimensions)
+            .color(this.props.color)
+            // .render()
+            .mode('queue')
+            .composite('source-over') // globalCompositeOperation "darken" may be broken in chrome, "source-over" is boring
+            .shadows()
+            .createAxes()
+            .reorderable()
+            .brushMode('None')
+            .brushMode('1D-axes') // enable brushing;
+            .autoscale();
+
+        _.forEach(this.props.dimensions, (value, key) => {
+            if (value.hasOwnProperty('domain')) {
+                this.pc = this.pc.scale(key, value.domain)
+            }
+        });
+        this.resetActiveData();
+        this.pc.render();
+
+    }
+
+    resetActiveData() {
         if (this.props.brushExtents) {
+
             this.pc.brushExtents(this.props.brushExtents);
             this.activeData = this.pc.brushed();
         } else {
+            console.log('reset brush');
             this.resetBrush();
         }
-
     }
+
+    setHighlights() {
+        if (this.props.dataHighlighted) {
+            this.pc.highlight(this.props.dataHighlighted)
+        } else {
+            this.pc.unhighlight();
+        }
+    }
+
+
 
     componentDidUpdate() { // update w/ new data http://blog.siftscience.com/blog/2015/4/6/d-threeact-how-sift-science-made-d3-react-besties
         // keep brush
         console.log('component did update');
-        let brushExtents = this.pc.brushExtents();
-        if (this.props.brushExtents !== undefined)
-            brushExtents = this.props.brushExtents; // overwrite current brushExtents with props
+        this.updatePC();
 
-        const numDimensions = this.props.dimensions.reduce(sum => sum + 1, 0);
-        if (this.props.data === undefined || this.props.data[0] === undefined || numDimensions > this.props.data[0].length) {
-            console.log("Not updating: not enough data for " + numDimensions + " dimensions.");
-            return;
-        }
-
-        this.pc = this.pc
-            .width(this.props.width)
-            .height(this.props.height)
-            .data(this.props.data) // set data again
-            .alpha(this.getAdaptiveAlpha(this.props.data))
-            .dimensions(this.props.dimensions)
-            .color(this.props.color)
-            .autoscale();
-
-        _.forEach(this.props.dimensions, function (value, key) {
-            if (value.hasOwnProperty('domain')) {
-                this.pc = this.pc.scale(key, value.domain)
-            }
-        }.bind(this));
-
-        this.pc = this.pc
-            .unhighlight([])
-            .render()
-            .shadows()
-            .createAxes()
-            //.reorderable()
-            .brushMode("None") // enable brushing
-            .brushMode("1D-axes") // enable brushing
-            .brushExtents(brushExtents)
-            .on("brushend", d => {
-                this.onBrushEnd(d)
-            })
-            .on("brush", d => {
-                this.onBrush(d)
-            });
-
-        if (this.props.dataHighlighted !== undefined && this.props.dataHighlighted.length > 0) {
-            this.pc = this.pc.highlight(this.props.dataHighlighted)
-        }
+        // let brushExtents = this.pc.brushExtents();
+        // if (this.props.brushExtents !== undefined)
+        //     brushExtents = this.props.brushExtents; // overwrite current brushExtents with props
+        //
+        // this.pc
+        //     .width(this.props.width)
+        //     .height(this.props.height)
+        //     .data(this.props.data) // set data again
+        //     .alpha(this.getAdaptiveAlpha(this.props.data))
+        //     .dimensions(this.props.dimensions)
+        //     .color(this.props.color)
+        //     .autoscale();
+        //
+        // _.forEach(this.props.dimensions, function (value, key) {
+        //     if (value.hasOwnProperty('domain')) {
+        //         this.pc = this.pc.scale(key, value.domain)
+        //     }
+        // }.bind(this));
+        //
+        // this.pc
+        //     .unhighlight()
+        //     .render()
+        //     .shadows()
+        //     .createAxes()
+        //     //.reorderable()
+        //     .brushMode("None") // enable brushing
+        //     .brushMode("1D-axes") // enable brushing
+        //     .on("brushend", d => {
+        //         this.onBrushEnd(d)
+        //     })
+        //     .on("brush", d => {
+        //         this.onBrush(d)
+        //     });
     }
 
-    /*,
-     componentWillUnmount () { // clean up
-     },*/
     shouldComponentUpdate(nextProps) {
-        return (
-            JSON.stringify(_.map(nextProps.dimensions, function (v, k) {
-                return v.title
-            }.bind(this))) !==
-            JSON.stringify(_.map(this.props.dimensions, function (v, k) {
-                return v.title
-            }.bind(this))) || // update if dimensions changed
-            JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data) || // update if data changed
-            JSON.stringify(nextProps.dataHighlighted) !== JSON.stringify(this.props.dataHighlighted) || // update if dataHighlighted changed
-            (nextProps.width != this.props.width) ||
-            (nextProps.height != this.props.height)
-        )
+        return ['data', 'dimensions', 'color', 'filter', 'highlighted', 'width', 'height'].some(prop => {
+            return this.props[prop] !== nextProps[prop];
+        });
     }
 
     render() {
