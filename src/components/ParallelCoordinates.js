@@ -180,6 +180,7 @@ class ParallelCoordinates extends Component {
 
         this.resetActiveData();
         this.pc.render();
+        this.setHighlights();
 
     }
 
@@ -195,8 +196,8 @@ class ParallelCoordinates extends Component {
     }
 
     setHighlights() {
-        if (this.props.dataHighlighted) {
-            this.pc.highlight(this.props.dataHighlighted)
+        if (this.props.highlighted) {
+            this.pc.highlight(this.props.highlighted)
         } else {
             this.pc.unhighlight();
         }
