@@ -38,7 +38,6 @@ class ParallelCoordinates extends Component {
         var Dx = x2 - x1;
         var Dy = y2 - y1;
         var delta = Math.abs(Dy * x0 - Dx * y0 - x1 * y2 + x2 * y1) / Math.sqrt(Math.pow(Dx, 2) + Math.pow(Dy, 2));
-        //console.log(delta);
         if (delta <= tol) return true;
         return false;
     }
@@ -80,13 +79,11 @@ class ParallelCoordinates extends Component {
 
     hoverLine(mousePosition) {
         // TODO get the hovered line's neuropil object identifier and return this; or just return full data here
-        //console.log('mp', this.getLines(mousePosition));
         var linesAndPositions = this.getLines(mousePosition);
         var linesData = linesAndPositions[0];
         if (linesData === undefined) {
             this.props.onLineHover(undefined)
         } else {
-            console.log('hoverLine', linesAndPositions);
             var firstLineData = linesData[0];
             this.props.onLineHover(firstLineData);
         }
@@ -147,7 +144,6 @@ class ParallelCoordinates extends Component {
 
         this.recalculateCentroids();
 
-        //console.log('d3 mouse move to svg?');
         d3Select(DOMNode).select('svg')
             .on("mousemove", function () {
                 var mousePosition = d3.mouse(this);
@@ -172,7 +168,6 @@ class ParallelCoordinates extends Component {
         if (this.props.brushExtents !== undefined)
             brushExtents = this.props.brushExtents; // overwrite current brushExtents with props
 
-        //console.log("updating for some reason, data=",this.props.data, "dimensions=", this.props.dimensions);
         var numDimensions = _.reduce(this.props.dimensions, function (sum, val) {
             return sum + 1
         }, 0)
@@ -192,7 +187,6 @@ class ParallelCoordinates extends Component {
 
         _.forEach(this.props.dimensions, function (value, key) {
             if (value.hasOwnProperty('domain')) {
-                console.log("setting domain", value.domain, "for dimension", key);
                 this.pc = this.pc.scale(key, value.domain)
             }
         }.bind(this))
@@ -223,7 +217,6 @@ class ParallelCoordinates extends Component {
 
     /*,
      componentWillUnmount () { // clean up
-     console.log('componentWillUnmount')
      },*/
     shouldComponentUpdate(nextProps, nextState) {
         return (
