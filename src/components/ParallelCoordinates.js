@@ -3,7 +3,7 @@ import parcoords from '../../d3.parcoords';
 import {select as d3Select} from 'd3';
 import _ from 'lodash';
 
-
+const TOP_MARGIN = 20;
 class ParallelCoordinates extends Component {
     constructor(props) {
         super(props);
@@ -135,22 +135,13 @@ class ParallelCoordinates extends Component {
         d3Select(DOMNode).select('svg')
             .on("mousemove", function()  {
                 const mousePosition = d3.mouse(this);
-                mousePosition[1] = mousePosition[1] - 33; // this is margin top at the moment...
+                mousePosition[1] = mousePosition[1] - TOP_MARGIN; // this is margin top at the moment...
                 that.hoverLine(mousePosition);
                 //highlightLineOnClick(mousePosition, true); //true will also add tooltip
             });
     }
 
     createPC() {
-        this.pc = parcoords({
-            //alpha: 0.2,
-            color: "#069",
-            shadowColor: "#f3f3f3", // does not exist in current PC version
-            dimensionTitleRotation: -50,
-            margin: {top: 33, right: 0, bottom: 12, left: 0},
-            nullValueSeparator: "bottom"
-        })(this.refs.parcoords);
-
         this.updatePC();
         this.pc
             .on("brushend", d => {
@@ -162,29 +153,31 @@ class ParallelCoordinates extends Component {
     }
 
     updatePC() {
+        const dimensions = _.cloneDeep(this.props.dimensions);
         this.checkPropsSanity();
+        if(this.pc) {
+            this.refs.parcoords.innerHTML = '';
+        }
+        this.pc = parcoords({
+            alpha: 0.2,
+            color: "#069",
+            // dimensionTitleRotation: -50,
+            margin: {top: TOP_MARGIN, right: 0, bottom: 12, left: 0},
+        })(this.refs.parcoords);
+
         this.pc
             .data(this.props.data)
-            .width(this.props.width)
-            .height(this.props.height)
             .alpha(this.getAdaptiveAlpha(this.props.data))
-            .dimensions(this.props.dimensions)
+            .dimensions(dimensions)
             .color(this.props.color)
-            // .render()
             .mode('queue')
-            .composite('source-over') // globalCompositeOperation "darken" may be broken in chrome, "source-over" is boring
+            .composite('darken')
             .shadows()
             .createAxes()
             .reorderable()
             .brushMode('None')
-            .brushMode('1D-axes') // enable brushing;
-            .autoscale();
+            .brushMode('1D-axes');
 
-        _.forEach(this.props.dimensions, (value, key) => {
-            if (value.hasOwnProperty('domain')) {
-                this.pc = this.pc.scale(key, value.domain)
-            }
-        });
         this.resetActiveData();
         this.pc.render();
 
@@ -258,10 +251,10 @@ class ParallelCoordinates extends Component {
     }
 
     render() {
+        console.log('render');
         const style = {
             width: this.props.width,
             height: this.props.height,
-            position: 'relative'
         };
         return (
             <div ref="parcoords" className="parcoords" style={style}></div>
