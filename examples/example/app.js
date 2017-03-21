@@ -16,7 +16,7 @@ class App extends Component {
             data: data.data,
             highlights: [],
             highlightIdx: 0
-        }
+        };
     }
     switchColor() {
         this.setState({
@@ -65,7 +65,7 @@ class App extends Component {
         console.log(idx);
         this.setState({
             highlightIdx: idx,
-            highlights: idx === 0 ? [] : [this.state.data[idx-1]]
+            highlights: idx === 0 ? [] : [this.state.data[idx - 1]]
         });
     }
 
@@ -83,13 +83,13 @@ class App extends Component {
                     onBrushEnd={d => console.log('brush end', d)}
                     onLineHover={d => console.log('line hover', d)}
                 />
-                <input type="button" onClick={this.switchColor.bind(this)} value="Change color"/>&nbsp;
-                <input type="button" onClick={this.switchSize.bind(this)} value="Change size"/>&nbsp;
-                <input type="button" onClick={this.switchDimensions.bind(this)} value="Switch dimensions"/>&nbsp;
-                <input type="button" onClick={this.switchData.bind(this)} value="Change data"/>&nbsp;
-                <input type="button" onClick={this.switchDummy.bind(this)} value="Change dummy"/>&nbsp;
-                <br/><br/>
-                <input type="button" onClick={this.switchHighlights.bind(this)} value="Switch highlights"/>&nbsp;
+                <input type="button" onClick={this.switchColor.bind(this)} value="Change color" />&nbsp;
+                <input type="button" onClick={this.switchSize.bind(this)} value="Change size" />&nbsp;
+                <input type="button" onClick={this.switchDimensions.bind(this)} value="Switch dimensions" />&nbsp;
+                <input type="button" onClick={this.switchData.bind(this)} value="Change data" />&nbsp;
+                <input type="button" onClick={this.switchDummy.bind(this)} value="Change dummy" />&nbsp;
+                <br /><br />
+                <input type="button" onClick={this.switchHighlights.bind(this)} value="Switch highlights" />&nbsp;
             </div>
         );
     }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import parcoords from '../../d3.parcoords';
-import {select as d3Select} from 'd3';
+import d3 from 'd3';
 import _ from 'lodash';
 
 const TOP_MARGIN = 20;
@@ -86,7 +86,7 @@ class ParallelCoordinates extends Component {
         const data = [];
         const centroids = [];
 
-        if (this.activeCentroids.length == 0) return null;
+        if (this.activeCentroids.length === 0) return null;
 
         // find between which axes the point is
         const axeNum = this.findAxeIdx(mousePosition, this.activeCentroids[0]);
@@ -101,17 +101,17 @@ class ParallelCoordinates extends Component {
 
         return {
             data, centroids
-        }
+        };
     }
 
     hoverLine(mousePosition) {
-        if(this.isBrushing) return;
+        if (this.isBrushing) return;
         const lines = this.getLines(mousePosition);
-        if(lines === null) {
+        if (lines === null) {
             this.lastHoveredLine = null;
             return;
         }
-        if(this.lastHoveredLine !== lines.data[0]) {
+        if (this.lastHoveredLine !== lines.data[0]) {
             this.lastHoveredLine = lines.data[0];
             this.props.onLineHover(this.lastHoveredLine);
             this.props.onLinesHover(lines.data);
@@ -126,14 +126,13 @@ class ParallelCoordinates extends Component {
     }
 
     componentDidMount() { // component is now in the DOM
-        console.log('component did mount');
         const DOMNode = this.refs.parcoords;
 
         this.createPC();
 
         const that = this;
-        d3Select(DOMNode).select('svg')
-            .on("mousemove", function()  {
+        d3.select(DOMNode).select('svg')
+            .on('mousemove', function () {
                 const mousePosition = d3.mouse(this);
                 mousePosition[1] = mousePosition[1] - TOP_MARGIN; // this is margin top at the moment...
                 that.hoverLine(mousePosition);
@@ -149,10 +148,10 @@ class ParallelCoordinates extends Component {
 
         this.updatePC();
         this.pc
-            .on("brushend", d => {
-                this.onBrushEnd(d)
+            .on('brushend', d => {
+                this.onBrushEnd(d);
             })
-            .on("brush", d => {
+            .on('brush', d => {
                 this.onBrush(d);
             });
     }
@@ -190,41 +189,31 @@ class ParallelCoordinates extends Component {
             this.pc.brushExtents(this.props.brushExtents);
             this.activeData = this.pc.brushed();
         } else {
-            console.log('reset brush');
             this.resetBrush();
         }
     }
 
     setHighlights() {
-        console.log(this.props.highlighted);
         if (this.props.highlights && this.props.highlights.length) {
-            console.log('highlight');
-            this.pc.highlight(this.props.highlights)
+            this.pc.highlight(this.props.highlights);
         } else {
-            console.log('unhighlight');
             this.pc.unhighlight();
         }
     }
 
 
-
     componentDidUpdate() { // update w/ new data http://blog.siftscience.com/blog/2015/4/6/d-threeact-how-sift-science-made-d3-react-besties
         // keep brush
-        console.log('component did update');
         this.updatePC();
     }
 
     shouldComponentUpdate(nextProps) {
         return ['data', 'dimensions', 'color', 'filter', 'highlights', 'width', 'height'].some(prop => {
-            if(this.props[prop] !== nextProps[prop]) {
-                console.log('prop ', prop, 'changed')
-            }
             return this.props[prop] !== nextProps[prop];
         });
     }
 
     render() {
-        console.log('rendere');
         const style = {
             width: this.props.width,
             height: this.props.height,
