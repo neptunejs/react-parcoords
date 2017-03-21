@@ -142,6 +142,11 @@ class ParallelCoordinates extends Component {
     }
 
     createPC() {
+        this.pc = parcoords({
+            alpha: 0.2,
+            margin: {top: TOP_MARGIN, right: 0, bottom: 12, left: 0},
+        })(this.refs.parcoords);
+
         this.updatePC();
         this.pc
             .on("brushend", d => {
@@ -155,17 +160,12 @@ class ParallelCoordinates extends Component {
     updatePC() {
         const dimensions = _.cloneDeep(this.props.dimensions);
         this.checkPropsSanity();
-        if(this.pc) {
-            this.refs.parcoords.innerHTML = '';
-        }
-        this.pc = parcoords({
-            alpha: 0.2,
-            color: "#069",
-            // dimensionTitleRotation: -50,
-            margin: {top: TOP_MARGIN, right: 0, bottom: 12, left: 0},
-        })(this.refs.parcoords);
+        this.refs.parcoords.style.width = this.props.width;
+        this.refs.parcoords.style.height = this.props.height;
 
         this.pc
+            .width(this.props.width)
+            .height(this.props.height)
             .data(this.props.data)
             .alpha(this.getAdaptiveAlpha(this.props.data))
             .dimensions(dimensions)
@@ -196,9 +196,12 @@ class ParallelCoordinates extends Component {
     }
 
     setHighlights() {
-        if (this.props.highlighted) {
-            this.pc.highlight(this.props.highlighted)
+        console.log(this.props.highlighted);
+        if (this.props.highlights && this.props.highlights.length) {
+            console.log('highlight');
+            this.pc.highlight(this.props.highlights)
         } else {
+            console.log('unhighlight');
             this.pc.unhighlight();
         }
     }
@@ -209,50 +212,19 @@ class ParallelCoordinates extends Component {
         // keep brush
         console.log('component did update');
         this.updatePC();
-
-        // let brushExtents = this.pc.brushExtents();
-        // if (this.props.brushExtents !== undefined)
-        //     brushExtents = this.props.brushExtents; // overwrite current brushExtents with props
-        //
-        // this.pc
-        //     .width(this.props.width)
-        //     .height(this.props.height)
-        //     .data(this.props.data) // set data again
-        //     .alpha(this.getAdaptiveAlpha(this.props.data))
-        //     .dimensions(this.props.dimensions)
-        //     .color(this.props.color)
-        //     .autoscale();
-        //
-        // _.forEach(this.props.dimensions, function (value, key) {
-        //     if (value.hasOwnProperty('domain')) {
-        //         this.pc = this.pc.scale(key, value.domain)
-        //     }
-        // }.bind(this));
-        //
-        // this.pc
-        //     .unhighlight()
-        //     .render()
-        //     .shadows()
-        //     .createAxes()
-        //     //.reorderable()
-        //     .brushMode("None") // enable brushing
-        //     .brushMode("1D-axes") // enable brushing
-        //     .on("brushend", d => {
-        //         this.onBrushEnd(d)
-        //     })
-        //     .on("brush", d => {
-        //         this.onBrush(d)
-        //     });
     }
 
     shouldComponentUpdate(nextProps) {
-        return ['data', 'dimensions', 'color', 'filter', 'highlighted', 'width', 'height'].some(prop => {
+        return ['data', 'dimensions', 'color', 'filter', 'highlights', 'width', 'height'].some(prop => {
+            if(this.props[prop] !== nextProps[prop]) {
+                console.log('prop ', prop, 'changed')
+            }
             return this.props[prop] !== nextProps[prop];
         });
     }
 
     render() {
-        console.log('render');
+        console.log('rendere');
         const style = {
             width: this.props.width,
             height: this.props.height,
@@ -277,7 +249,7 @@ ParallelCoordinates.defaultProps = {
 ParallelCoordinates.propTypes = {
     dimensions: React.PropTypes.object.isRequired,
     data: React.PropTypes.array,
-    dataHighlighted: React.PropTypes.array,
+    highlights: React.PropTypes.array,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
 };

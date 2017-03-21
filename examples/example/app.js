@@ -14,7 +14,8 @@ class App extends Component {
             dummy: false,
             dimensions: data.dimensions,
             data: data.data,
-            highlighted: 0
+            highlights: [],
+            highlightIdx: 0
         }
     }
     switchColor() {
@@ -59,15 +60,16 @@ class App extends Component {
         });
     }
 
-    switchHighlighted() {
+    switchHighlights() {
+        let idx = (this.state.highlightIdx + 1) % (this.state.data.length + 1);
+        console.log(idx);
         this.setState({
-            highlighted: (this.state.highlighted + 1) % this.state.data.length
+            highlightIdx: idx,
+            highlights: idx === 0 ? [] : [this.state.data[idx-1]]
         });
     }
 
     render() {
-        const highlighted = [this.state.data[this.state.highlighted]];
-        console.log(highlighted);
         return (
             <div>
                 <ParallelCoordinates
@@ -76,18 +78,18 @@ class App extends Component {
                     dimensions={this.state.dimensions}
                     data={this.state.data}
                     color={this.state.color}
-                    highlighted={highlighted}
+                    highlights={this.state.highlights}
                     onBrush={noop}
                     onBrushEnd={d => console.log('brush end', d)}
                     onLineHover={d => console.log('line hover', d)}
                 />
-                <input type="button" onClick={this.switchColor.bind(this)} value="Switch color"/>&nbsp;
-                <input type="button" onClick={this.switchSize.bind(this)} value="Switch size"/>&nbsp;
+                <input type="button" onClick={this.switchColor.bind(this)} value="Change color"/>&nbsp;
+                <input type="button" onClick={this.switchSize.bind(this)} value="Change size"/>&nbsp;
                 <input type="button" onClick={this.switchDimensions.bind(this)} value="Switch dimensions"/>&nbsp;
-                <input type="button" onClick={this.switchData.bind(this)} value="Switch data"/>&nbsp;
-                <input type="button" onClick={this.switchDummy.bind(this)} value="Switch dummy"/>&nbsp;
-                <br/>
-                <input type="button" onClick={this.switchHighlighted.bind(this)} value="Switch highlighted"/>&nbsp;
+                <input type="button" onClick={this.switchData.bind(this)} value="Change data"/>&nbsp;
+                <input type="button" onClick={this.switchDummy.bind(this)} value="Change dummy"/>&nbsp;
+                <br/><br/>
+                <input type="button" onClick={this.switchHighlights.bind(this)} value="Switch highlights"/>&nbsp;
             </div>
         );
     }
