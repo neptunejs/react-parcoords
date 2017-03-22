@@ -51,8 +51,6 @@ ReactDOM.render(
 
 ```
 
-## props
-`data` - The data to display
 ## License
 
 MIT
