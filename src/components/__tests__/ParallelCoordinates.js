@@ -1,11 +1,11 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import renderer from 'react-test-renderer';
 
-import Dummy from '../ParallelCoordinates';
+import ParallelCoordinates from '../ParallelCoordinates';
 
 test('Component renders', () => {
     const component = renderer.create(
-        <Dummy />
+        <ParallelCoordinates />
     );
     let tree = component.toJSON();
 
