@@ -1,6 +1,6 @@
 {
   "name": "react-parcoords",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A react wrapper around d3 parallel-coordinates",
   "homepage": "",
   "author": {
