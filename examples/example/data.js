@@ -1,8 +1,11 @@
-const data = [
-    {A: 1, B: 2},
-    {A: 3, B: 1},
-    {A: 2, B: 6}
-];
+const data = new Array(100);
+for (var i = 0; i < data.length; i++) {
+    data[i] = {A: rand(), B: rand() / 2, C: rand() * 2};
+}
+
+function rand() {
+    return Math.round(Math.random() * 100);
+}
 
 const dimensions = {
     A: {
@@ -11,6 +14,10 @@ const dimensions = {
     },
     B: {
         title: 'Title B',
+        type: 'number'
+    },
+    C: {
+        title: 'Title C',
         type: 'number'
     }
 };
