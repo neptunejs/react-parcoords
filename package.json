@@ -1,63 +1,63 @@
 {
-    "name": "react-parcoords",
-    "version": "0.0.0",
-    "description": "A react wrapper around d3 parallel-coordinates",
-    "homepage": "",
-    "author": {
-        "name": "Daniel Kostro",
-        "email": "kostro.d@gmail.com",
-        "url": ""
-    },
-    "files": [
-        "lib",
-        "lib-es6"
-    ],
-    "main": "lib/index.js",
-    "keywords": [
-        "react",
-        "parcoords",
-        "parallel coordinates"
-    ],
-    "module": "lib-es6/index.js",
-    "scripts": {
-        "compile": "babel src --out-dir lib --ignore __tests__ --quiet",
-        "compile-es6": "BABEL_ENV=es6 babel src --out-dir lib-es6 --ignore __tests__ --quiet",
-        "start": "webpack-dev-server --inline",
-        "test": "run-s testonly eslint",
-        "eslint": "eslint src",
-        "eslint-fix": "eslint --fix src",
-        "prepare": "run-p compile compile-es6",
-        "testonly": "jest"
-    },
-    "peerDependencies": {
-        "react": "^15.4.2",
-        "react-dom": "^15.4.2"
-    },
-    "devDependencies": {
-        "babel-cli": "^6.24.0",
-        "babel-core": "^6.24.0",
-        "babel-loader": "^6.4.1",
-        "babel-preset-env": "^1.2.2",
-        "babel-preset-react": "^6.23.0",
-        "css-loader": "^0.27.3",
-        "eslint": "^3.17.1",
-        "eslint-config-cheminfo": "^1.7.0",
-        "eslint-config-neptun-react": "^1.0.1",
-        "eslint-plugin-no-only-tests": "^1.1.0",
-        "eslint-plugin-react": "^6.10.0",
-        "jest-cli": "^19.0.2",
-        "npm-run-all": "^4.0.2",
-        "react": "^15.4.2",
-        "react-dom": "^15.4.2",
-        "react-test-renderer": "^15.4.2",
-        "style-loader": "^0.16.0",
-        "webpack": "^2.2.1",
-        "webpack-dev-server": "^2.4.2"
-    },
-    "repository": "neptunjs/react-parcoords",
-    "license": "BSD-3-Clause",
-    "dependencies": {
-        "d3": "^3.0.0",
-        "lodash": "^4.17.4"
-    }
+  "name": "react-parcoords",
+  "version": "0.0.0",
+  "description": "A react wrapper around d3 parallel-coordinates",
+  "homepage": "",
+  "author": {
+    "name": "Daniel Kostro",
+    "email": "kostro.d@gmail.com"
+  },
+  "files": [
+    "lib",
+    "lib-es6"
+  ],
+  "main": "lib/index.js",
+  "keywords": [
+    "react",
+    "parcoords",
+    "parallel",
+    "coordinates"
+  ],
+  "module": "lib-es6/index.js",
+  "scripts": {
+    "compile": "babel src --out-dir lib --ignore __tests__ --quiet",
+    "compile-es6": "BABEL_ENV=es6 babel src --out-dir lib-es6 --ignore __tests__ --quiet",
+    "start": "webpack-dev-server --inline",
+    "test": "run-s testonly eslint",
+    "eslint": "eslint src",
+    "eslint-fix": "eslint --fix src",
+    "prepare": "run-p compile compile-es6",
+    "testonly": "jest"
+  },
+  "peerDependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.2.2",
+    "babel-preset-react": "^6.23.0",
+    "css-loader": "^0.27.3",
+    "eslint": "^3.17.1",
+    "eslint-config-cheminfo": "^1.7.0",
+    "eslint-config-neptun-react": "^1.0.1",
+    "eslint-plugin-no-only-tests": "^1.1.0",
+    "eslint-plugin-react": "^6.10.0",
+    "jest-cli": "^19.0.2",
+    "npm-run-all": "^4.0.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-test-renderer": "^15.4.2",
+    "style-loader": "^0.16.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "repository": "neptunjs/react-parcoords",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "d3": "^3.0.0",
+    "lodash-es": "^4.17.4"
+  }
 }

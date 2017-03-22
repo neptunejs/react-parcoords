@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import parcoords from '../../d3.parcoords';
 import d3 from 'd3';
-import _ from 'lodash';
+import {cloneDeep} from 'lodash-es';
 
 const TOP_MARGIN = 20;
 class ParallelCoordinates extends Component {
@@ -157,7 +157,7 @@ class ParallelCoordinates extends Component {
     }
 
     updatePC() {
-        const dimensions = _.cloneDeep(this.props.dimensions);
+        const dimensions = cloneDeep(this.props.dimensions);
         this.checkPropsSanity();
         this.refs.parcoords.style.width = this.props.width;
         this.refs.parcoords.style.height = this.props.height;
