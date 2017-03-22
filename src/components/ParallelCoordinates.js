@@ -219,7 +219,7 @@ class ParallelCoordinates extends Component {
             height: this.props.height,
         };
         return (
-            <div ref="parcoords" className="parcoords" style={style}></div>
+            <div ref="parcoords" className="parcoords" style={style} />
         );
     }
 }
