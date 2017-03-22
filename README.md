@@ -7,6 +7,52 @@
 $ npm install --save react-parcoords
 ```
 
+## Usage example
+```jsx
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+import {ParallelCoordinates} from '../../src';
+
+const dimensions = {
+    A: {
+        title: 'Title A',
+        type: 'number'
+    },
+    B: {
+        title: 'Title B',
+        type: 'number'
+    }
+};
+
+const data = [
+    {A: 1, B:4},
+    {A: 4, B:3},
+    {A: 3, B: 1}
+];
+
+const props = {
+    color: 'red',
+    width: 800,
+    height: 300,
+    dimensions,
+    data: data,
+    highlights: [],
+    onBrush: console.log,
+    onBrushEnd: console.log,
+    onLineHover: console.log,
+    onLinesHover: console.log
+};
+
+
+ReactDOM.render(
+    <ParallelCoordinates {...props}/>,
+    document.getElementById('example')
+);
+
+```
+
+## props
+`data` - The data to display
 ## License
 
 MIT

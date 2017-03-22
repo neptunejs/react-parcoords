@@ -82,6 +82,7 @@ class App extends Component {
                     onBrush={noop}
                     onBrushEnd={d => console.log('brush end', d)}
                     onLineHover={d => console.log('line hover', d)}
+                    onLinesHover={lines => console.log('lines hover', lines)}
                 />
                 <input type="button" onClick={this.switchColor.bind(this)} value="Change color" />&nbsp;
                 <input type="button" onClick={this.switchSize.bind(this)} value="Change size" />&nbsp;
