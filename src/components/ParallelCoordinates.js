@@ -24,18 +24,9 @@ class ParallelCoordinates extends Component {
         this.activeData = this.props.data;
     }
 
-    getAdaptiveAlpha(data) {
-        if (data === undefined) {
-            return 1;
-        }
-        const ratio = 100 / data.length;
-        return Math.min(1, Math.max(ratio, 0.04));
-    }
-
     onBrushEnd(data) {
         this.isBrushing = false;
         this.activeData = data;
-        this.pc.alpha(this.getAdaptiveAlpha(data)).render();
         this.props.onBrushEnd({
             data: data,
             extents: this.pc.brushExtents()
@@ -44,7 +35,6 @@ class ParallelCoordinates extends Component {
 
     onBrush(data) {
         this.isBrushing = true;
-        this.pc.alpha(this.getAdaptiveAlpha(data)).render();
         this.props.onBrush({
             data,
             extents: this.pc.brushExtents()
@@ -142,7 +132,6 @@ class ParallelCoordinates extends Component {
 
     createPC() {
         this.pc = parcoords({
-            alpha: 0.2,
             margin: {top: TOP_MARGIN, right: 0, bottom: 12, left: 0},
         })(this.refs.parcoords);
 
@@ -166,7 +155,6 @@ class ParallelCoordinates extends Component {
             .width(this.props.width)
             .height(this.props.height)
             .data(this.props.data)
-            .alpha(this.getAdaptiveAlpha(this.props.data))
             .dimensions(dimensions)
             .color(this.props.color)
             .mode('queue')
