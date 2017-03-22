@@ -1,6 +1,34 @@
 const d3 = require('d3');
 import './d3.parcoords.css';
 
+/*
+ Copyright (c) 2012, Kai Chang
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice, this
+ list of conditions and the following disclaimer.
+
+ * Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation
+ and/or other materials provided with the distribution.
+
+ * The name Kai Chang may not be used to endorse or promote products
+ derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL MICHAEL BOSTOCK BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 d3.parcoords = function(config) {
     var __ = {
         data: [],
@@ -343,7 +371,7 @@ d3.parcoords = function(config) {
             });
         }
 
-        // update activeCentroids
+        // update centroids
         if (__.bundleDimension !== null) {
             pc.bundleDimension(__.bundleDimension);
         }
@@ -425,8 +453,6 @@ d3.parcoords = function(config) {
         events.render.call(this);
         return this;
     };
-
-    pc.isBrushed = isBrushed;
 
     function isBrushed() {
         if (__.brushed && __.brushed.length !== __.data.length)
@@ -526,12 +552,12 @@ d3.parcoords = function(config) {
         var cols = p.length;
         var a = 0.5;			// center between axes
         for (var i = 0; i < cols; ++i) {
-            // activeCentroids on 'real' axes
+            // centroids on 'real' axes
             var x = position(p[i]);
             var y = __.dimensions[p[i]].yscale(row[p[i]]);
             centroids.push($V([x, y]));
 
-            // activeCentroids on 'virtual' axes
+            // centroids on 'virtual' axes
             if (i < cols - 1) {
                 var cx = x + a * (position(p[i+1]) - x);
                 var cy = y + a * (__.dimensions[p[i+1]].yscale(row[p[i+1]]) - y);

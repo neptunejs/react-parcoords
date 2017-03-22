@@ -9,8 +9,9 @@ $ npm install --save react-parcoords
 
 ## License
 
-MIT © Kai Chang
+MIT
 
+d3.parcoords.js and d3.parcoords.css licensed under BSD-3-Clause.
 
 [npm-image]: https://badge.fury.io/js/react-parcoords.svg
 [npm-url]: https://npmjs.org/package/react-parcoords
