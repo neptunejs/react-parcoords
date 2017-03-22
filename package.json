@@ -29,6 +29,11 @@
     "prepare": "run-p compile compile-es6",
     "testonly": "jest"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    }
+  },
   "peerDependencies": {
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
