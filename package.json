@@ -23,7 +23,7 @@
     "compile": "babel src --out-dir lib --ignore __tests__ --quiet",
     "compile-es6": "BABEL_ENV=es6 babel src --out-dir lib-es6 --ignore __tests__ --quiet",
     "start": "webpack-dev-server --inline",
-    "test": "run-s testonly eslint",
+    "test": "run-s eslint",
     "eslint": "eslint src",
     "eslint-fix": "eslint --fix src",
     "prepare": "run-p compile compile-es6",
