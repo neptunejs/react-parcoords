@@ -426,6 +426,8 @@ d3.parcoords = function(config) {
 // attempt to determine types of each dimension based on first row of data
     pc.detectDimensionTypes = function(data) {
         var types = {};
+        if(!data[0]) return types;
+
         d3.keys(data[0])
             .forEach(function(col) {
                 types[isNaN(Number(col)) ? col : parseInt(col)] = pc.toTypeCoerceNumbers(data[0][col]);
