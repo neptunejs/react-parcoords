@@ -8,6 +8,7 @@ class ParallelCoordinates extends Component {
     constructor(props) {
         super(props);
         this.lastHoveredLine = null;
+        this.changed = [];
     }
 
     set activeData(val) {
@@ -191,13 +192,19 @@ class ParallelCoordinates extends Component {
 
     componentDidUpdate() { // update w/ new data http://blog.siftscience.com/blog/2015/4/6/d-threeact-how-sift-science-made-d3-react-besties
         // keep brush
-        this.updatePC();
+        if (this.changed.length === 1 && this.changed[0] === 'highlights') {
+            this.setHighlights();
+        } else {
+            this.updatePC();
+        }
     }
 
     shouldComponentUpdate(nextProps) {
-        return ['data', 'dimensions', 'color', 'filter', 'highlights', 'width', 'height'].some(prop => {
+        this.changed = ['data', 'dimensions', 'color', 'filter', 'highlights', 'width', 'height'].filter(prop => {
             return this.props[prop] !== nextProps[prop];
         });
+
+        return this.changed.length > 0;
     }
 
     render() {
