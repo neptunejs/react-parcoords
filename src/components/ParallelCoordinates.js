@@ -109,9 +109,8 @@ class ParallelCoordinates extends Component {
     }
 
     checkPropsSanity() {
-        const numDimensions = Object.keys(this.props.dimensions).length;
-        if (this.props.data === undefined || this.props.data[0] === undefined || numDimensions > this.props.data[0].length) {
-            throw new Error('Data and dimension mismatch');
+        if (!this.props.data) {
+            throw new Error('Data is required');
         }
     }
 
@@ -220,15 +219,21 @@ ParallelCoordinates.defaultProps = {
     onLineHover: noop,
     onLinesHover: noop,
     onBrush: noop,
-    onBrushEnd: noop
+    onBrushEnd: noop,
+    data: [],
+    width: 800,
+    height: 300
 };
 
 ParallelCoordinates.propTypes = {
-    dimensions: React.PropTypes.object.isRequired,
-    data: React.PropTypes.array,
+    data: React.PropTypes.array.isRequired,
     highlights: React.PropTypes.array,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
+    onBrush: React.PropTypes.func,
+    onBrushEnd: React.PropTypes.func,
+    onLineHover: React.PropTypes.func,
+    onLinesHover: React.PropTypes.func
 };
 
 export default ParallelCoordinates;
