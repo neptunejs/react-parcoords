@@ -41,6 +41,18 @@ class App extends Component {
         });
     }
 
+    switchDimensionPresence() {
+        if(this.state.dimensions) {
+            this.setState({
+                dimensions: null
+            });
+        } else {
+            this.setState({
+                dimensions: data.dimensions
+            });
+        }
+    }
+
     switchData() {
         const data = this.state.data.map(d => {
             const newData = {};
@@ -58,6 +70,16 @@ class App extends Component {
         this.setState({
             dummy: !this.state.dummy
         });
+    }
+
+    switchDataPresence() {
+        if(this.state.data.length !== 0) {
+            this.setState({data: []})
+        } else {
+            this.setState({
+                data: data.data
+            });
+        }
     }
 
     switchHighlights() {
@@ -91,6 +113,8 @@ class App extends Component {
                 <input type="button" onClick={this.switchDummy.bind(this)} value="Change dummy" />&nbsp;
                 <br /><br />
                 <input type="button" onClick={this.switchHighlights.bind(this)} value="Switch highlights" />&nbsp;
+                <input type="button" onClick={this.switchDataPresence.bind(this)} value="Switch data presence" />&nbsp;
+                <input type="button" onClick={this.switchDimensionPresence.bind(this)} value="Switch dimension presence" />&nbsp;
             </div>
         );
     }
