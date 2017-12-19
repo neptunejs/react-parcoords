@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import parcoords from '../../d3.parcoords';
 import d3 from 'd3';
 import cloneDeep from 'lodash/cloneDeep';
@@ -233,14 +234,14 @@ ParallelCoordinates.defaultProps = {
 };
 
 ParallelCoordinates.propTypes = {
-    data: React.PropTypes.array.isRequired,
-    highlights: React.PropTypes.array,
-    width: React.PropTypes.number,
-    height: React.PropTypes.number,
-    onBrush: React.PropTypes.func,
-    onBrushEnd: React.PropTypes.func,
-    onLineHover: React.PropTypes.func,
-    onLinesHover: React.PropTypes.func
+    data: PropTypes.array.isRequired,
+    highlights: PropTypes.array,
+    width: PropTypes.number,
+    height: PropTypes.number,
+    onBrush: PropTypes.func,
+    onBrushEnd: PropTypes.func,
+    onLineHover: PropTypes.func,
+    onLinesHover: PropTypes.func
 };
 
 export default ParallelCoordinates;

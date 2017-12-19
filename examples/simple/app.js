@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import data from './data';
 
@@ -19,6 +19,6 @@ const props = {
 
 
 ReactDOM.render(
-    <ParallelCoordinates {...props}/>,
+    <ParallelCoordinates {...props} />,
     document.getElementById('example')
 );
