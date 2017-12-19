@@ -14,7 +14,8 @@ const props = {
     onBrush: console.log,
     onBrushEnd: console.log,
     onLineHover: console.log,
-    onLinesHover: console.log
+    onLinesHover: console.log,
+    onExtentsChanged: console.log
 };
 
 

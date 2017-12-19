@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import parcoords from '../../d3.parcoords';
 import d3 from 'd3';
 import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 
 const TOP_MARGIN = 20;
 class ParallelCoordinates extends Component {
@@ -29,10 +30,31 @@ class ParallelCoordinates extends Component {
     onBrushEnd(data) {
         this.isBrushing = false;
         this.activeData = data;
+        const extents = this.pc.brushExtents();
         this.props.onBrushEnd({
-            data: data,
-            extents: this.pc.brushExtents()
+            data,
+            extents,
         });
+        this.changedExtents(extents);
+    }
+
+    changedExtents(extents) {
+        const changed = {};
+        for (let key of Object.keys(extents)) {
+            if (!this.lastExtents || !isEqual(extents[key], this.lastExtents[key])) {
+                changed[key] = extents[key];
+            }
+        }
+        if (this.lastExtents) {
+            for (let key of Object.keys(this.lastExtents)) {
+                if (!extents[key]) changed[key] = null;
+            }
+        }
+
+        if (this.props.onExtentsChanged) {
+            this.props.onExtentsChanged(changed);
+        }
+        this.lastExtents = extents;
     }
 
     onBrush(data) {
