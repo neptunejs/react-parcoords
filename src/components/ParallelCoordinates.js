@@ -13,6 +13,39 @@ class ParallelCoordinates extends Component {
         this.changed = [];
     }
 
+    componentDidMount() { // component is now in the DOM
+        const DOMNode = this.refs.parcoords;
+
+        this.createPC();
+
+        const that = this;
+        d3.select(DOMNode).select('svg')
+            .on('mousemove', function () {
+                const mousePosition = d3.mouse(this);
+                mousePosition[1] = mousePosition[1] - TOP_MARGIN; // this is margin top at the moment...
+                that.hoverLine(mousePosition);
+                //highlightLineOnClick(mousePosition, true); //true will also add tooltip
+            });
+    }
+
+    shouldComponentUpdate(nextProps) {
+        this.changed = ['data', 'dimensions', 'color', 'filter', 'highlights', 'width', 'height'].filter(prop => {
+            return this.props[prop] !== nextProps[prop];
+        });
+
+        return this.changed.length > 0;
+    }
+
+    componentDidUpdate() { // update w/ new data http://blog.siftscience.com/blog/2015/4/6/d-threeact-how-sift-science-made-d3-react-besties
+        // keep brush
+        if (this.changed.length === 1 && this.changed[0] === 'highlights') {
+            this.setHighlights();
+        } else {
+            this.updatePC();
+        }
+    }
+
+
     set activeData(val) {
         this._activeData = val;
         this.activeCentroids = this._activeData.map(this.pc.compute_real_centroids);
@@ -138,21 +171,6 @@ class ParallelCoordinates extends Component {
         }
     }
 
-    componentDidMount() { // component is now in the DOM
-        const DOMNode = this.refs.parcoords;
-
-        this.createPC();
-
-        const that = this;
-        d3.select(DOMNode).select('svg')
-            .on('mousemove', function () {
-                const mousePosition = d3.mouse(this);
-                mousePosition[1] = mousePosition[1] - TOP_MARGIN; // this is margin top at the moment...
-                that.hoverLine(mousePosition);
-                //highlightLineOnClick(mousePosition, true); //true will also add tooltip
-            });
-    }
-
     createPC() {
         this.pc = parcoords({
             margin: {top: TOP_MARGIN, right: 0, bottom: 12, left: 0},
@@ -212,23 +230,6 @@ class ParallelCoordinates extends Component {
         }
     }
 
-
-    componentDidUpdate() { // update w/ new data http://blog.siftscience.com/blog/2015/4/6/d-threeact-how-sift-science-made-d3-react-besties
-        // keep brush
-        if (this.changed.length === 1 && this.changed[0] === 'highlights') {
-            this.setHighlights();
-        } else {
-            this.updatePC();
-        }
-    }
-
-    shouldComponentUpdate(nextProps) {
-        this.changed = ['data', 'dimensions', 'color', 'filter', 'highlights', 'width', 'height'].filter(prop => {
-            return this.props[prop] !== nextProps[prop];
-        });
-
-        return this.changed.length > 0;
-    }
 
     render() {
         const style = {
