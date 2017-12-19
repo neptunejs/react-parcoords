@@ -1,6 +1,4 @@
 const d3 = require('d3');
-import './d3.parcoords.css';
-
 /*
  Copyright (c) 2012, Kai Chang
  All rights reserved.

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import data from './data';
+import '../../d3.parcoords.css';
 
 import {ParallelCoordinates} from '../../src';
 
