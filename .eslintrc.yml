@@ -1,3 +1,1 @@
-extends: neptun-react
-env:
-  jest: true
+extends: cheminfo
