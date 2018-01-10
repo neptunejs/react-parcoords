@@ -4,10 +4,8 @@ import renderer from 'react-test-renderer';
 import ParallelCoordinates from '../ParallelCoordinates';
 
 test('Component renders', () => {
-    const component = renderer.create(
-        <ParallelCoordinates />
-    );
-    let tree = component.toJSON();
+  const component = renderer.create(<ParallelCoordinates />);
+  let tree = component.toJSON();
 
-    expect(tree).toMatchSnapshot();
+  expect(tree).toMatchSnapshot();
 });
